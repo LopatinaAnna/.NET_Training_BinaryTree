@@ -110,8 +110,7 @@ namespace BinaryTree
         {
             if (Contains(item))
             {
-
-
+                Root = Remove(Root, item);
 
                 --Count;
 
@@ -121,6 +120,41 @@ namespace BinaryTree
             }
             return false;
         }
+
+        private BinaryTreeNode<T> Remove(BinaryTreeNode<T> parent, T item)
+        {
+            if (Comparer.Compare(item, parent.Data) < 0) 
+                parent.Left = Remove(parent.Left, item);
+            else if (Comparer.Compare(item, parent.Data) > 0)
+                parent.Right = Remove(parent.Right, item);
+            // if value is same as parent's value, then this is the node to be deleted  
+            else
+            {
+                // node with only one child or no child  
+                if (parent.Left == null)
+                    return parent.Right;
+                else if (parent.Right == null)
+                    return parent.Left;
+
+                // node with two children: Get the inorder successor (smallest in the right subtree)  
+                parent.Data = TreeMin(parent.Right);
+
+                // Delete the inorder successor  
+                parent.Right = Remove(parent.Right, parent.Data);
+            }
+
+            return parent;
+        }
+
+        private T TreeMin(BinaryTreeNode<T> node)
+        {
+            while (node.Left != null)
+            {
+                node = node.Left;
+            }
+            return node.Data;
+        }
+
 
         /// <summary>
         /// Returns item with the highest value

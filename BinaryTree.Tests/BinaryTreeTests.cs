@@ -247,190 +247,188 @@ namespace BinaryTree.Tests
         #endregion
 
 
+        #region Advanced
+        [Test]
+        public void Remove_ElementThatIsInTree_ReturnsTrue()
+        {
+            var actual = tree.Remove(testData[3]);
 
-        // UNCOMMENT TO CHECK ADVANCED PART
-        // #region Advanced
-        // [Test]
-        // public void Remove_ElementThatIsInTree_ReturnsTrue()
-        // {
-        // var actual = tree.Remove(testData[3]);
+            Assert.IsTrue(actual);
+        }
 
-        // Assert.IsTrue(actual);
-        // }
+        [Test]
+        public void Remove_UnexistingElement_ReturnsFalse()
+        {
+            var actual = tree.Remove(objectNotInTree);
 
-        // [Test]
-        // public void Remove_UnexistingElement_ReturnsFalse()
-        // {
-        // var actual = tree.Remove(objectNotInTree);
+            Assert.IsFalse(actual);
+        }
 
-        // Assert.IsFalse(actual);
-        // }
+        [Test]
+        public void Remove_Null_ReturnsFalse()
+        {
+            ComparableClass nullElement = null;
+            var tree = new BinaryTree<ComparableClass>();
 
-        // [Test]
-        // public void Remove_Null_ReturnsFalse()
-        // {
-        // ComparableClass nullElement = null;
-        // var tree = new BinaryTree<ComparableClass>();
+            var actual = tree.Remove(nullElement);
 
-        // var actual = tree.Remove(nullElement);
+            Assert.IsFalse(actual);
+        }
 
-        // Assert.IsFalse(actual);
-        // }
+        [Test]
+        public void Remove_Leaf_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[1], testData[4], testData[0], testData[2] };
 
-        // [Test]
-        // public void Remove_Leaf_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[1], testData[4], testData[0], testData[2] };
+            tree.Remove(testData[3]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // tree.Remove(testData[3]);
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_NodeWithLeftChild_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[3], testData[0], testData[2] };
 
-        // [Test]
-        // public void Remove_NodeWithLeftChild_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[3], testData[0], testData[2] };
+            tree.Remove(testData[4]);
+            tree.Remove(testData[1]);
 
-        // tree.Remove(testData[4]);
-        // tree.Remove(testData[1]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_NodeWithLeftChildAn_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[3], testData[1], testData[4] };
 
-        // [Test]
-        // public void Remove_NodeWithLeftChildAn_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[3], testData[1], testData[4] };
+            tree.Remove(testData[2]);
+            tree.Remove(testData[0]);
 
-        // tree.Remove(testData[2]);
-        // tree.Remove(testData[0]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_NodeWithRightChild_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[4], testData[0], testData[2] };
+            tree.Remove(testData[3]);
 
-        // [Test]
-        // public void Remove_NodeWithRightChild_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[4], testData[0], testData[2] };
-        // tree.Remove(testData[3]);
+            tree.Remove(testData[1]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // tree.Remove(testData[1]);
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_RootWithRightChild_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[2] };
+            var tree = CreateTree();
+            tree.Add(testData[0]);
+            tree.Add(testData[2]);
 
-        // [Test]
-        // public void Remove_RootWithRightChild_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[2] };
-        // var tree = CreateTree();
-        // tree.Add(testData[0]);
-        // tree.Add(testData[2]);
+            tree.Remove(testData[0]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // tree.Remove(testData[0]);
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_NodeWithTwoChildren_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[3], testData[4], testData[0], testData[2] };
 
-        // [Test]
-        // public void Remove_NodeWithTwoChildren_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[3], testData[4], testData[0], testData[2] };
+            tree.Remove(testData[1]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // tree.Remove(testData[1]);
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_RootWithTwoChildren_TreeCanBeTraversedCorrectlyInAnyOrder()
+        {
+            T[] expected = { testData[3], testData[1], testData[4], testData[2] };
 
-        // [Test]
-        // public void Remove_RootWithTwoChildren_TreeCanBeTraversedCorrectlyInAnyOrder()
-        // {
-        // T[] expected = { testData[3], testData[1], testData[4], testData[2] };
+            tree.Remove(testData[0]);
+            var actual = tree.Traverse(TraverseType.InOrder).ToList();
 
-        // tree.Remove(testData[0]);
-        // var actual = tree.Traverse(TraverseType.InOrder).ToList();
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
+        [Test]
+        public void Remove_ElementThatIsInTree_InvokesEventElementRemoved()
+        {
+            var elementWasRemoved = false;
+            tree.ElementRemoved += (sender, args) => elementWasRemoved = true;
 
-        // [Test]
-        // public void Remove_ElementThatIsInTree_InvokesEventElementRemoved()
-        // {
-        // var elementWasRemoved = false;
-        // tree.ElementRemoved += (sender, args) => elementWasRemoved = true;
+            tree.Remove(testData[0]);
 
-        // tree.Remove(testData[0]);
+            Assert.IsTrue(elementWasRemoved
+            , "Remove method should invoke ElementRemoved event if parameter was deleted from tree.");
+        }
 
-        // Assert.IsTrue(elementWasRemoved
-        // , "Remove method should invoke ElementRemoved event if parameter was deleted from tree.");
-        // }
+        [Test]
+        public void EventElementRemoved_Invoked_ValueIsRemovedItem()
+        {
+            var expected = testData[0];
+            T actual = objectNotInTree;
+            tree.ElementRemoved += (sender, args) => actual = args.Value;
 
-        // [Test]
-        // public void EventElementRemoved_Invoked_ValueIsRemovedItem()
-        // {
-        // var expected = testData[0];
-        // T actual = objectNotInTree;
-        // tree.ElementRemoved += (sender, args) => actual = args.Value;
+            tree.Remove(testData[0]);
 
-        // tree.Remove(testData[0]);
+            Assert.AreEqual(expected, actual
+            , "Removed item should be passed to arguments of event when it was invoked.");
+        }
 
-        // Assert.AreEqual(expected, actual
-        // , "Removed item should be passed to arguments of event when it was invoked.");
-        // }
+        [Test]
+        public void EventElementRemoved_Invoked_SenderIsCurrentBinaryTree()
+        {
+            var expected = tree;
+            BinaryTree<T> actual = null;
+            tree.ElementAdded += (sender, args) => actual = sender as BinaryTree<T>;
+            tree.Add(testData[0]);
 
-        // [Test]
-        // public void EventElementRemoved_Invoked_SenderIsCurrentBinaryTree()
-        // {
-        // var expected = tree;
-        // BinaryTree<T> actual = null;
-        // tree.ElementAdded += (sender, args) => actual = sender as BinaryTree<T>;
-        // tree.Add(testData[0]);
+            tree.Remove(testData[0]);
 
-        // tree.Remove(testData[0]);
+            Assert.AreEqual(expected, actual
+            , "Current binary tree should be passed as sender in the event.");
+        }
 
-        // Assert.AreEqual(expected, actual
-        // , "Current binary tree should be passed as sender in the event.");
-        // }
+        [Test]
+        public void Remove_ElementThatIsNotInTree_DoesNotInvokeEventElementRemoved()
+        {
+            var elementWasRemoved = false;
+            tree.ElementRemoved += (sender, args) => elementWasRemoved = true;
 
-        // [Test]
-        // public void Remove_ElementThatIsNotInTree_DoesNotInvokeEventElementRemoved()
-        // {
-        // var elementWasRemoved = false;
-        // tree.ElementRemoved += (sender, args) => elementWasRemoved = true;
+            tree.Remove(objectNotInTree);
 
-        // tree.Remove(objectNotInTree);
+            Assert.IsFalse(elementWasRemoved
+            , "Remove method should not invoke event if parameter is not in tree.");
+        }
 
-        // Assert.IsFalse(elementWasRemoved
-        // , "Remove method should not invoke event if parameter is not in tree.");
-        // }
+        [TestCase(0)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void Remove_AmountOfElements_CountEqualsHowManyElementsLeftInTree(int amount)
+        {
+            var expected = 100 - amount;
+            var tree = CreateTree();
+            for (int i = 0; i < 100; i++)
+                tree.Add(testData[0]);
 
-        // [TestCase(0)]
-        // [TestCase(10)]
-        // [TestCase(100)]
-        // public void Remove_AmountOfElements_CountEqualsHowManyElementsLeftInTree(int amount)
-        // {
-        // var expected = 100 - amount;
-        // var tree = CreateTree();
-        // for (int i = 0; i < 100; i++)
-        // tree.Add(testData[0]);
+            for (int i = 0; i < amount; i++)
+                tree.Remove(testData[0]);
+            var actual = tree.Count;
 
-        // for (int i = 0; i < amount; i++)
-        // tree.Remove(testData[0]);
-        // var actual = tree.Count;
+            Assert.AreEqual(expected, actual);
+        }
 
-        // Assert.AreEqual(expected, actual);
-        // }
-
-        // #endregion
+        #endregion
 
     }
 
@@ -503,27 +501,26 @@ namespace BinaryTree.Tests
             }
             #endregion
 
-			// UNCOMMENT TO CHECK ADVANCED PART
-            // #region Advanced
-            // ,
-            // new object[]
-            // {
-                // typeof(UncomparableClass),
-                // new UncomparableClass[]
-                // {
-                    // new UncomparableClass{ Value = 100 },
-                    // new UncomparableClass{ Value = 60 },
-                    // new UncomparableClass{ Value = 400 },
-                    // new UncomparableClass{ Value = 10 },
-                    // new UncomparableClass{ Value = 90 }
-                // },
-                // new UncomparableClass{ Value = 20 },
-                // new UncomparableClassComparer(),
-                // new int[] { 0, 1, 3, 4, 2 },
-                // new int[] { 3, 1, 4, 0, 2 },
-                // new int[] { 3, 4, 1, 2, 0 }
-            // }
-            // #endregion
+             #region Advanced
+             ,
+             new object[]
+             {
+                 typeof(UncomparableClass),
+                 new UncomparableClass[]
+                 {
+                     new UncomparableClass{ Value = 100 },
+                     new UncomparableClass{ Value = 60 },
+                     new UncomparableClass{ Value = 400 },
+                     new UncomparableClass{ Value = 10 },
+                     new UncomparableClass{ Value = 90 }
+                 },
+                 new UncomparableClass{ Value = 20 },
+                 new UncomparableClassComparer(),
+                 new int[] { 0, 1, 3, 4, 2 },
+                 new int[] { 3, 1, 4, 0, 2 },
+                 new int[] { 3, 4, 1, 2, 0 }
+             }
+             #endregion
 
         };
     }
