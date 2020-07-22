@@ -16,12 +16,12 @@ namespace BinaryTree
         /// <summary>
         /// Event that should be called when new element is added
         /// </summary>
-        //public event TreeEventHandler ElementAdded;
+        public event TreeEventHandler ElementAdded;
 
         /// <summary>
         /// Event that should be called when element in tree is removed
         /// </summary>
-        //public event TreeEventHandler ElementRemoved;
+        public event TreeEventHandler ElementRemoved;
 
         /// <summary>
         /// Defines how many elements tree contains
@@ -47,6 +47,8 @@ namespace BinaryTree
         {
             if (typeof(IComparable<T>).IsAssignableFrom(typeof(T)))
                 Comparer = Comparer<T>.Default;
+            else
+                throw new ArgumentException("T doesn't implement IComparable<T>");
         }
 
         /// <summary>
@@ -66,6 +68,9 @@ namespace BinaryTree
         /// <exception cref="ArgumentNullException">Thrown if parameter was null</exception>
         public void Add(T item)
         {
+            if (item is null)
+                throw new ArgumentNullException(nameof(item));
+
             BinaryTreeNode<T> node = new BinaryTreeNode<T>(item);
 
             if (Root == null)
@@ -92,7 +97,8 @@ namespace BinaryTree
                     parent.Right = node;
             }
             ++Count;
-            //ElementAdded.Invoke(this, new TreeEventArgs<T>(item, ""));
+
+            ElementAdded?.Invoke(this, new TreeEventArgs<T>(item, "Element Added"));
         }
 
         /// <summary>
@@ -104,7 +110,13 @@ namespace BinaryTree
         {
             if (Contains(item))
             {
+
+
+
                 --Count;
+
+                ElementRemoved?.Invoke(this, new TreeEventArgs<T>(item, "Element Removed"));
+
                 return true;
             }
             return false;
@@ -155,7 +167,7 @@ namespace BinaryTree
         /// <returns>True if tree contains item, false if it doesn't</returns>
         public bool Contains(T data)
         {
-            if (data is null) 
+            if (data is null)
                 return false;
 
             BinaryTreeNode<T> current = Root;
@@ -182,8 +194,10 @@ namespace BinaryTree
         {
             if (traverseType == TraverseType.InOrder)
                 return (IEnumerable<T>)TraverseInOrder(Root).GetEnumerator();
-            else 
-                return default;
+            else if (traverseType == TraverseType.PreOrder)
+                return (IEnumerable<T>)TraversePreOrder(Root).GetEnumerator();
+            else
+                return (IEnumerable<T>)TraversePostOrder(Root).GetEnumerator();
         }
 
 
@@ -218,6 +232,35 @@ namespace BinaryTree
 
                 foreach (var value in TraverseInOrder(current.Right))
                     yield return value;
+            }
+        }
+
+        public IEnumerable<T> TraversePreOrder(BinaryTreeNode<T> current)
+        {
+            if (current != null)
+            {
+                yield return current.Data;
+
+                foreach (var value in TraversePreOrder(current.Left))
+                    yield return value;
+
+
+                foreach (var value in TraversePreOrder(current.Right))
+                    yield return value;
+            }
+        }
+
+        public IEnumerable<T> TraversePostOrder(BinaryTreeNode<T> current)
+        {
+            if (current != null)
+            {
+                foreach (var value in TraversePostOrder(current.Left))
+                    yield return value;
+
+                foreach (var value in TraversePostOrder(current.Right))
+                    yield return value;
+
+                yield return current.Data;
             }
         }
     }
